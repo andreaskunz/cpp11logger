@@ -14,3 +14,10 @@ A thread-safe logger used C++11 features.
 ## Usage
 
 see "logger_test.cpp"
+
+## Build
+#### Linux
+```bash
+$ cd scripts
+$ ./build.bash
+```

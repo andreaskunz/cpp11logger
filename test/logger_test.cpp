@@ -1,6 +1,6 @@
 #include <thread>
 #include <list>
-#include "logger.h"
+#include <logger.hpp>
 
 using namespace std;
 using namespace logger;

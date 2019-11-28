@@ -23,6 +23,7 @@ public:
     virtual ~BaseLogger() = default;
 
     virtual LogStream operator()(Level nLevel = Level::Debug);
+    void setLevel(Level loglevel);
 private:
     const tm* getLocalTime();
     void endline(Level nLevel, std::string&& oMessage);
@@ -32,6 +33,7 @@ private:
 private:
     std::mutex _lock;
     tm _localTime;
+    Level _loglevel{Level::Debug};
 };
 
 class BaseLogger::LogStream : public std::ostringstream

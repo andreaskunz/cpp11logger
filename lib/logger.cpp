@@ -42,6 +42,13 @@ BaseLogger::LogStream BaseLogger::operator()(Level nLevel)
     return LogStream(*this, nLevel);
 }
 
+void BaseLogger::setLevel(Level level)
+{
+    _lock.lock();
+    _loglevel = level;
+    _lock.unlock();
+}
+
 const tm* BaseLogger::getLocalTime()
 {
     auto now = chrono::system_clock::now();
@@ -53,7 +60,10 @@ const tm* BaseLogger::getLocalTime()
 void BaseLogger::endline(Level nLevel, string&& oMessage)
 {
     _lock.lock();
-    output(getLocalTime(), LevelStr.find(nLevel)->second, oMessage.c_str());
+    if(LevelStr.find(_loglevel)->first <= LevelStr.find(nLevel)->first)
+    {
+        output(getLocalTime(), LevelStr.find(nLevel)->second, oMessage.c_str());
+    }
     _lock.unlock();
 }
 

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <mutex>
+#include <functional>
 
 struct tm;
 
@@ -12,6 +13,7 @@ enum class Level { Debug, Info, Warning, Error, Fatal };
 class FileLogger;
 class ConsoleLogger;
 class BaseLogger;
+using LogCb = std::function<void(std::string)>;
 
 class BaseLogger
 {
@@ -68,6 +70,18 @@ private:
                         const char *str_message);
 private:
     std::ofstream _file;
+};
+
+class CbFunctionLogger : public BaseLogger
+{
+ public:
+  CbFunctionLogger(LogCb) noexcept;
+  virtual void output(const tm *p_tm,
+                      const char *str_level,
+                      const char *str_message);
+
+ private:
+  LogCb callback;
 };
 
 extern ConsoleLogger debug;

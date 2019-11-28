@@ -5,7 +5,8 @@
 #include <iomanip>
 #include <map>
 #include <regex>
-#include <logger.hpp>
+#include <sstream>
+#include "../include/logger.hpp"
 
 using namespace std;
 using namespace logger;
@@ -95,4 +96,19 @@ void FileLogger::output(const tm *p_tm,
         << '[' << str_level << "]"
         << "\t" << str_message << endl;
     _file.flush();
+}
+
+CbFunctionLogger::CbFunctionLogger(LogCb callbackFunction) noexcept
+    : BaseLogger(), callback{callbackFunction}
+{}
+
+void CbFunctionLogger::output(const tm *p_tm,
+                           const char *str_level,
+                           const char *str_message)
+{
+  std::stringstream ss{};
+  ss << '[' << p_tm << ']'
+       << '[' << str_level << "]"
+       << "\t" << str_message << endl;
+  callback(ss.str());
 }
